@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>空き家マップ</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>空き家マップ</h1>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // マップの初期化
+        var map = L.map('map').setView([31.7333, 131.0667], 13); // 都城市の緯度と経度
+
+        // タイルレイヤーの追加
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // 空き家の位置データ
+        var vacantHouses = [
+            { "lat": 31.7353, "lng": 131.0647, "address": "空き家1", "description": "空き家の詳細1" },
+            { "lat": 31.7323, "lng": 131.0687, "address": "空き家2", "description": "空き家の詳細2" }
+            // 他の空き家データをここに追加
+        ];
+
+        // 空き家のマーカーを追加
+        vacantHouses.forEach(function(house) {
+            var marker = L.marker([house.lat, house.lng]).addTo(map);
+            marker.bindPopup("<b>" + house.address + "</b><br>" + house.description);
+        });
+    </script>
+</body>
+</html>
