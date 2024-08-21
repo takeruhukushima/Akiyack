@@ -1,0 +1,154 @@
+/* サイドバー全体のスタイル */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* サイドバー開閉時にスクロールバーが表示されないように */
+}
+
+.sidebar {
+  position: fixed; /* サイドバーを画面に固定 */
+  top: 0;
+  left: 0; /* 左側に配置 */
+  height: 100vh; /* 高さを画面全体に合わせる */
+  background-color: rgba(230, 226, 217, 0.7); /* ぼやけた透明な背景 */
+  backdrop-filter: blur(10px); /* 背景をぼかす */
+  box-shadow: 4px 0 6px rgba(0, 0, 0, 0.1); /* 影のスタイル */
+  border-radius: 0 0.5rem 0.5rem 0; /* 右の角を丸める */
+  transition: width 0.5s ease-in-out; /* 幅のトランジション */
+  overflow: hidden; /* コンテンツのはみ出しを隠す */
+  z-index: 1000; /* サイドバーを最前面に表示 */
+  width: 4rem; /* サイドバーが閉じているときの幅 */
+  padding: 1rem; /* サイドバー内のパディング */
+  box-sizing: border-box; /* パディングを含むボックスサイズ */
+}
+
+/* サイドバーが開いているときのスタイル */
+.sidebar-open {
+  width: 16rem; /* サイドバーが開いているときの幅 */
+}
+
+/* サイドバーが閉じているときのスタイル */
+.sidebar-close {
+  width: 5.0rem; /* サイドバーが閉じているときの幅 */
+}
+
+/* サイドバーのコンテンツ */
+.sidebar-content {
+  opacity: 0; /* 初期状態ではサイドバーの内容を隠す */
+  transition: opacity 0.3s ease-in-out; /* 内容の表示のトランジション */
+  padding: 1rem; /* サイドバー内のパディング */
+  box-sizing: border-box; /* パディングを含むボックスサイズ */
+}
+
+.sidebar-open .sidebar-content {
+  opacity: 1; /* サイドバーが開いたときに内容を表示 */
+}
+
+/* タイトルセクション */
+.sidebar-title-container {
+  display: flex; /* アイコンとタイトルを横並びにする */
+  align-items: center; /* アイコンとタイトルを縦方向に中央配置 */
+  margin-left: 1rem; /* アイコンとタイトルの間隔 */
+}
+
+.sidebar-title-icon {
+  width: 1.5rem; /* タイトルアイコンの幅 */
+  height: 1.5rem; /* タイトルアイコンの高さ */
+  margin-right: 0.5rem; /* アイコンとタイトルの間隔 */
+}
+
+.sidebar-title {
+  display: none; /* 初期状態で非表示 */
+  white-space: nowrap; /* テキストの折り返しを防ぐ */
+  overflow: hidden; /* はみ出したテキストを隠す */
+  text-overflow: ellipsis; /* はみ出したテキストを省略記号にする */
+  font-size: 1rem; /* フォントサイズ */
+  color: rgba(0, 0, 0, 0.8); /* 背景がぼやけた程度の透明度 */
+}
+
+.sidebar-open .sidebar-title {
+  display: block; /* サイドバーが開いたときにタイトルを表示 */
+}
+
+/* リストのスタイル */
+.sidebar-list {
+  list-style: none; /* リストの「・」を削除 */
+  padding: 0; /* リストのパディングを削除 */
+  margin: 0; /* リストのマージンを削除 */
+}
+
+.sidebar-item {
+  display: flex; /* アイコンとリンクを横並びにする */
+  align-items: center; /* アイコンとリンクを縦方向に中央配置 */
+  margin: 0.5rem 0; /* アイテム間の間隔 */
+}
+
+.sidebar-close .sidebar-link {
+  display: none; /* サイドバーが閉じているときにはリンクを非表示 */
+}
+
+.sidebar-item {
+  display: flex; /* アイコンとリンクを横並びにする */
+  align-items: center; /* 縦方向に中央配置 */
+}
+
+.sidebar-icon {
+  margin-right: 0.5rem; /* アイコンとリンクの間にスペースを確保 */
+}
+
+.sidebar-open .sidebar-item {
+  display: flex; /* サイドバーが開いたときにアイコンとリンクを表示 */
+}
+
+.sidebar-icon {
+  width: 1.5rem; /* 各アイコンの幅を調整 */
+  height: 1.5rem; /* 各アイコンの高さを調整 */
+  margin-right: 0.5rem; /* アイコンとリンクの間隔 */
+}
+
+.sidebar-link {
+  text-decoration: none; /* リンクの下線を削除 */
+  color: #333; /* リンクの色 */
+  font-size: 1rem; /* リンクのフォントサイズ */
+}
+
+.sidebar-link:hover {
+  color: #000; /* ホバー時のリンクの色 */
+}
+
+.sidebar-close .sidebar-title-container {
+  display: flex; /* サイドバーが閉じているときにもタイトルアイコンを表示 */
+}
+
+/* プロフィールセクションのスタイル */
+.sidebar-profile {
+  position: absolute; /* サイドバー内の絶対位置 */
+  bottom: 0; /* サイドバーの一番下に固定 */
+  left: 0;
+  width: 100%; /* プロフィールセクションをサイドバー幅に合わせる */
+  padding: 1rem; /* 内部に余白を追加 */
+  box-sizing: border-box; /* パディングを含むボックスサイズ */
+  display: flex; /* アイコンとユーザー名を横並びにする */
+  align-items: center; /* アイコンとユーザー名を中央揃え */
+}
+
+/* プロフィール画像のスタイル */
+.profile-image {
+  width: 2.5rem; /* プロフィール画像の固定幅 */
+  height: 2.5rem; /* プロフィール画像の固定高さ */
+  border-radius: 50%; /* 画像を円形にする */
+  object-fit: cover; /* 画像のアスペクト比を保つ */
+  margin-right: 0.5rem; /* 画像とユーザー名の間隔 */
+}
+
+/* プロフィール名のスタイル */
+.profile-name {
+  font-size: 1rem; /* ユーザー名のフォントサイズ */
+  color: rgba(0, 0, 0, 0.8); /* テキストの色 */
+}
+
+/* サイドバーが閉じている時でも画像はそのまま */
+.sidebar-close .profile-name {
+  display: none; /* サイドバーが閉じている時はユーザー名を非表示 */
+}
+

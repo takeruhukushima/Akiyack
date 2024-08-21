@@ -1,0 +1,171 @@
+/* 全体のコンテナ */
+.register-house-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f3f4f6;
+    padding: 1rem;
+}
+
+/* 内側のコンテナ */
+.register-house-inner {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin: 3rem auto;
+}
+
+/* ヘッダー */
+.register-house-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.register-house-header h1 {
+    font-size: 1.5rem;
+    color: #333;
+}
+/* ヘッダー */
+.register-house-header-button {
+    background: none;
+    border: none;
+    color: #4b5563;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s;
+}
+
+/* ヘッダー ボタン ホバー時 */
+.register-house-header-button:hover {
+    background-color: #f0f4f8; /* 背景色を少し黒く */
+    color: #333; /* テキスト色を濃く */
+}
+/* タイトル */
+.register-house-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+}
+
+/* 入力フィールド */
+.register-house-input,
+.register-house-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.register-house-textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* プログレスバー */
+.register-house-progress-bar {
+    width: 100%;
+    background-color: #e5e7eb;
+    border-radius: 0.5rem;
+    height: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.register-house-progress-bar-fill {
+    background-color: #FF5A5F;
+    height: 100%;
+    border-radius: 0.5rem;
+    transition: width 0.3s ease-in-out;
+}
+
+/* ボタン */
+.register-house-button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.375rem;
+    border: none;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.register-house-button-previous {
+    background-color: #ffffff;
+    color: #4b5563;
+}
+
+.register-house-button-previous:hover {
+    background-color: #f0f4f8; /* 明るくした色 */
+}
+
+.register-house-button-previous-disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+}
+
+.register-house-button-next {
+    background-color: #FF5A5F;
+    color: #ffffff;
+}
+
+.register-house-button-next:hover {
+    background-color: #e94e50; /* 現在の色より少し濃い赤色 */
+}
+
+.register-house-button-next-disabled {
+    background-color: #f3f4f6;
+    color: #6b7280;
+}
+
+/* ステップのイントロページ */
+.intro-step {
+    text-align: center;
+    padding: 2rem;
+}
+
+.intro-title {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.intro-content {
+    list-style: none;
+    padding: 0;
+    text-align: left; /* 左寄せに変更 */
+}
+
+.intro-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+}
+
+.intro-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.intro-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.intro-text h2 {
+    font-size: 1.25rem;
+    margin: 0;
+    color: #333;
+}
+
+.intro-text p {
+    font-size: 1rem;
+    color: #6b7280;
+    margin: 0;
+}
