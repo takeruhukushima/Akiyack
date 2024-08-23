@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getFirestore, collection, addDoc } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import supabase from '../supabaseClient'; // Supabaseの設定をインポート
 import './main_css/RegisterAKIYA.css';
 
 // ステップの定義
@@ -11,29 +10,36 @@ const steps = [
     title: 'AKIYACKで空き家をご登録',
     content: [
       { step: 1, text: '空き家の情報を入力', description: '空き家のご住所や状況などの基本情報を入力しましょう', icon: '🏠' },
-      { step: 2, text: '空き家の状況を記入', description: '写真、タイトル、説明文を追加しましょう。', icon: '📸' },
+      { step: 2, text: '空き家の状況を記入', description: 'タイトル、説明文を追加しましょう。', icon: '📸' },
       { step: 3, text: 'ページ作成を完了', description: 'いくつかの詳細を確認してから、AKIYAページを公開しましょう。', icon: '🚀' }
     ]
   },
   { id: 'location', question: '空き家の所在地をご入力ください', placeholder: '住所を入力' },
+  { id: 'description', question: '空き家の説明を入力してください', placeholder: '説明を入力' },
   { id: 'finish', text: '完了', description: 'いたずら防止のため登録された情報を確認した後、mapページにて公開します。' },
 ];
 
 const RegisterHouse: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Record<string, string>>({
+  const [formData, setFormData] = useState<Record<string, any>>({
     location: '',
+    description: '',
+    title: ''
   });
   const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const auth = getAuth();
-    setUser(auth.currentUser);
+    const fetchUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    fetchUser();
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleNext = () => {
@@ -56,13 +62,22 @@ const RegisterHouse: React.FC = () => {
         alert('ログインが必要です');
         return;
       }
-      const firestore = getFirestore();
-      await addDoc(collection(firestore, 'AKIYA'), {
-        ...formData,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userId: user.uid,
-      });
+
+      const { error } = await supabase
+        .from('akiya')
+        .insert([{
+          location: formData.location,
+          description: formData.description,
+          title: formData.title,
+          created_at: new Date(),
+          updated_at: new Date(),
+          user_id: user.id, // 必要に応じてユーザーIDを追加
+        }]);
+
+      if (error) {
+        throw error;
+      }
+
       navigate('/home'); // 完了後にhomeページにリダイレクト
     } catch (error) {
       console.error('Error adding document: ', error);
@@ -107,15 +122,39 @@ const RegisterHouse: React.FC = () => {
         ) : (
           <div className="input-step">
             <h1 className="register-house-title">{steps[currentStep].question}</h1>
-            <input
-              type="text"
-              name={steps[currentStep].id}
-              value={formData[steps[currentStep].id] || ''}
-              onChange={handleInputChange}
-              className="register-house-input"
-              placeholder={steps[currentStep].placeholder}
-              required
-            />
+            {currentStep === 1 ? (
+              <>
+                <input
+                  type="text"
+                  name="location"
+                  value={formData.location || ''}
+                  onChange={handleInputChange}
+                  className="register-house-input"
+                  placeholder="住所を入力"
+                  required
+                />
+              </>
+            ) : currentStep === 2 ? (
+              <>
+                <input
+                  type="text"
+                  name="title"
+                  value={formData.title || ''}
+                  onChange={handleInputChange}
+                  className="register-house-input"
+                  placeholder="タイトルを入力"
+                  required
+                />
+                <textarea
+                  name="description"
+                  value={formData.description || ''}
+                  onChange={handleInputChange}
+                  className="register-house-textarea"
+                  placeholder="説明を入力"
+                  required
+                />
+              </>
+            ) : null}
           </div>
         )}
 
@@ -143,6 +182,7 @@ const RegisterHouse: React.FC = () => {
           >
             {currentStep === steps.length - 1 ? '完了' : '次へ'}
           </button>
+
         </div>
       </div>
     </div>

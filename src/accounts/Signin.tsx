@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase'; // Firebaseの設定をインポート
+import supabase from '../supabaseClient'; // Supabaseの設定をインポート
 import './accounts_css/signin.css';
 
 const Signin: React.FC = () => {
@@ -12,9 +11,16 @@ const Signin: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Firebase Authenticationでサインイン
-      await signInWithEmailAndPassword(auth, email, password);
-      // 認証成功後に/homeにリダイレクト
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // サインイン成功後に/homeにリダイレクト
       navigate('/home');
     } catch (error) {
       // 認証失敗時のエラーハンドリング
