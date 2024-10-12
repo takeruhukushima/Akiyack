@@ -1,30 +1,51 @@
-// src/main/SidebarComponent.tsx
-import React from 'react';
-import { Link } from 'react-router-dom'; // Linkコンポーネントのインポート
-import './main_css/SidebarComponent.css'; // サイドバー専用のCSSをインポート
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import supabase from '../supabaseClient'; // Supabaseクライアントをインポート
+import './main_css/SidebarComponent.css';
+import ProfileImage from './icons/profile-image.png';
 
 // アイコンファイルのパスを指定
 import RegisterIcon from './icons/icon-register.svg';
 import AboutIcon from './icons/icon-about.svg';
 import HelpIcon from './icons/icon-help.svg';
 import TitleIcon from './icons/icon-title.svg'; // タイトル用アイコンのインポート
-import ProfileImage from './icons/profile-image.jpg'; // プロフィール画像をインポート
 
 const SidebarComponent: React.FC = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
+
+  // Supabaseからユーザー情報を取得
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles') // ユーザープロフィールを格納しているテーブル名
+          .select('*')
+          .eq('id', user.id) // ユーザーIDに基づいて検索
+          .single();
+
+        if (error) {
+          console.error('プロフィール情報の取得に失敗しました:', error);
+        } else {
+          setUserProfile(data);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   return (
     <div
-      className={`sidebar ${
-        isSidebarOpen ? 'sidebar-open' : 'sidebar-close'
-      }`}
+      className={`sidebar ${isSidebarOpen ? 'sidebar-open' : 'sidebar-close'}`}
       onMouseEnter={() => setIsSidebarOpen(true)}
       onMouseLeave={() => setIsSidebarOpen(false)}
     >
       <div className="sidebar-content">
         <div className="sidebar-title-container">
           <img src={TitleIcon} alt="Akiyack" className="sidebar-title-icon" />
-          <div className="sidebar-title">Akiyack</div>
+          <Link to="home" className="sidebar-title">Akiyack</Link>
         </div>
         <ul className="sidebar-list">
           <li className="sidebar-item">
@@ -33,18 +54,37 @@ const SidebarComponent: React.FC = () => {
           </li>
           <li className="sidebar-item">
             <img src={AboutIcon} alt="About us" className="sidebar-icon" />
-            <Link to="#" className="sidebar-link">About us</Link>
+            <a href="https://brown578260.studio.site" className="sidebar-link">About us</a>
           </li>
           <li className="sidebar-item">
             <img src={HelpIcon} alt="Help" className="sidebar-icon" />
-            <Link to="#" className="sidebar-link">Help</Link>
+            <a href="#" className="sidebar-link">Help</a>
           </li>
         </ul>
       </div>
       <div className="sidebar-profile">
-        <img src={ProfileImage} alt="User Profile" className="profile-image" />
-        <div className="profile-name">User Name</div>
-      </div>
+  {/* ユーザーのプロフィール情報が取得できた場合に表示 */}
+  {userProfile ? (
+    <>
+      <Link to={`/main/profile`}>
+        <img src={userProfile.profile_image_url} alt="User Profile" className="profile-image" />
+      </Link>
+      <Link to={`/main/profile`}>
+        <div className="/main/profile">{userProfile.username}</div>
+      </Link> 
+    </>
+  ) : (
+    <>
+    <Link to={`/profile`}>
+      <img src={ProfileImage} alt="User Profile" className="profile-image" />
+    </Link>
+    <Link to={`/profile`}>
+      <div className="profile-name">User Name</div>
+    </Link>
+    </>
+  )}
+</div>
+
     </div>
   );
 };
