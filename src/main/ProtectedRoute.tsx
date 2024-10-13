@@ -17,7 +17,8 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>; // ローディング中に表示
+    // ローディング中は何も表示しない
+    return null;
   }
 
   if (!user) {
