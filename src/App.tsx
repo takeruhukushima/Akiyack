@@ -5,46 +5,24 @@ import Signin from './accounts/Signin';
 import Home from './main/home';
 import RegisterAKIYA from './main/RegisterAKIYA';
 import Profile from './main/Profile'; // プロフィールコンポーネントをインポート
-import ProtectedRoute from './main/ProtectedRoute'; // ProtectedRouteをインポート
 import './App.css';
 
 function App() {
   return (
     <Router>
       <Routes>
-        {/* "/" でHomeページを表示し、認証が必要なルートにする */}
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
+        {/* "/" でHomeページを表示（認証不要） */}
+        <Route path="/" element={<Home />} />
 
         {/* 認証不要なルート */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/signin" element={<Signin />} />
 
-        {/* 他の保護されたルート */}
-        <Route
-          path="/register"
-          element={
-            <ProtectedRoute>
-              <RegisterAKIYA />
-            </ProtectedRoute>
-          }
-        />
+        {/* 他のルート（認証不要） */}
+        <Route path="/register" element={<RegisterAKIYA />} />
 
-        {/* プロフィールページへの保護されたルート */}
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        {/* プロフィールページ（認証不要） */}
+        <Route path="/profile" element={<Profile />} />
 
         {/* 不正なルートは "/" にリダイレクト */}
         <Route path="*" element={<Navigate to="/" replace />} />
