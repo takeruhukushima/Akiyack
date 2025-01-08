@@ -6,6 +6,7 @@ import Home from './main/home';
 import RegisterAKIYA from './main/RegisterAKIYA';
 import Profile from './main/Profile'; // プロフィールコンポーネントをインポート
 import './App.css';
+import Aboutus from './intro/aboutus';
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
 
         {/* プロフィールページ（認証不要） */}
         <Route path="/profile" element={<Profile />} />
+
+        <Route path="/aboutus" element={<Aboutus />} />
+
 
         {/* 不正なルートは "/" にリダイレクト */}
         <Route path="*" element={<Navigate to="/" replace />} />
